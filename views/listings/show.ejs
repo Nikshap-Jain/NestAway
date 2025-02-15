@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing</title>
-</head>
-<body>
+<% layout("layouts/boilerplate") -%>
+
     <h3><%=info.title%></h3>
     <ul>
         <li><%=info.description %></li>
@@ -17,5 +11,4 @@
     <form action="/listings/<%=info._id %>?_method=DELETE" method="post">
         <button>Delete this Listing</button>
     </form>
-</body>
-</html>
+

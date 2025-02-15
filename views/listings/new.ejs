@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Listing</title>
-</head>
-<body>
+<% layout("layouts/boilerplate") -%>
     <h3>Add new Listing </h3>
     <form action="/listings" method="post">
         <input type="text" name="listing[title]" placeholder="Enter title"><br><br>
@@ -16,5 +9,3 @@
         <input type="text" name="listing[country]" placeholder="Enter country"><br><br>
         <button>ADD</button>
     </form>
-</body>
-</html>

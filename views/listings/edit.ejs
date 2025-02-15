@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Listing</title>
-</head>
-<body>
+<% layout("layouts/boilerplate") -%>
     <h3>Edit this Listing</h3>
     <form action="/listings?_method=PUT" method="post">
         <input type="text" name="listing[title]" value="<%= listing.title %>"><br><br>
@@ -18,5 +11,3 @@
         <input type="hidden" name="listing[id]" value="<%= listing._id %>">
         <button>EDIT</button>
     </form>
-</body>
-</html>

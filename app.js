@@ -4,12 +4,15 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
+const engine = require("ejs-mate"); //use to make template like navbar which show on other ejs template (layouts in views folder)
 
 const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
 app.set("view engine", "ejs");
 app.set("ejs", path.join(__dirname, "views"));
 app.use(express.urlencoded({ Extended: true }));
 app.use(methodOverride("_method"));
+app.engine("ejs", engine);
+app.use(express.static(path.join(__dirname, "/public")));
 
 async function main() {
   await mongoose.connect(mongoURL);
