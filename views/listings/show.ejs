@@ -1,14 +1,21 @@
 <% layout("layouts/boilerplate") -%>
+    <div class="flex flex-col items-center">
 
-    <h3><%=info.title%></h3>
-    <ul>
-        <li><%=info.description %></li>
-        <li> &#8377;<%= info.price.toLocaleString("en-IN") %></li>
-        <li><%= info.location %></li>
-        <li><%= info.country %></li>
-    </ul>
-    <a href="/listings/<%=info._id%>/edit">Edit the Listing</a>
-    <form action="/listings/<%=info._id %>?_method=DELETE" method="post">
-        <button>Delete this Listing</button>
-    </form>
-
+        <h3 class="text-4xl font-semibold text-gray-800 mb-4">Listing Details</h3>
+        <div class="shadow-lg rounded-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <img src="<%=info.image.url%>" alt="Error" class="w-full max-w-lg aspect-[16/9] object-cover">
+        </div>
+        <ul class="mt-4">
+            <li><%=info.title %></li>
+            <li><%=info.description %></li>
+            <li> &#8377;<%= info.price.toLocaleString("en-IN") %></li>
+            <li><%= info.location %></li>
+            <li><%= info.country %></li>
+        </ul>
+        <div class="flex gap-6">
+            <a href="/listings/<%=info._id%>/edit" class="mt-6 bg-blue-400 hover:bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">Edit the Listing</a>
+        <form action="/listings/<%=info._id %>?_method=DELETE" method="post">
+            <button class="mt-6 bg-slate-400 hover:bg-slate-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">Delete this Listing</button>
+        </form>
+        </div>
+    </div>

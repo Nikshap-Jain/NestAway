@@ -1,13 +1,38 @@
-<% layout("layouts/boilerplate") -%>
-    <h3>Edit this Listing</h3>
+
+    <% layout("layouts/boilerplate") -%>
     <form action="/listings?_method=PUT" method="post">
-        <input type="text" name="listing[title]" value="<%= listing.title %>"><br><br>
-        <input type="text" name = "listing[description]" value="<%= listing.description %>"><br><br>
-        <input type="text" name="listing[image]" value="<%= listing.image %>"><br><br>
-        <input type="number" name = "listing[price]" value="<%= listing.price %>"><br><br>
-        <input type="text" name="listing[location]" value="<%= listing.location %>"><br><br>
-        <input type="text" name="listing[country]" value="<%= listing.country %>"><br><br>
-        <!-- in body i also sent the id with type hidden its alternative is , id passed in paramterin route -->
+        <div class="flex flex-col items-center">
+            <h3 class="text-4xl font-semibold text-gray-800 mt-6">Edit This Listing</h3>
+            <div>
+                <label for="title ">Title</label><br>
+                <input type="text" name="listing[title]" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" value="<%= listing.title %>">
+            </div>
+            <div>
+                <label for="description">Description</label><br>
+                <textarea type="text" name = "listing[description]" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg"><%=listing.description %></textarea>
+            </div>
+            <div>
+                <label for="image">Image Link</label><br>
+                <input type="text" name="listing[image]" value="<%= listing.image %>" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+
+            </div>
+            <div>
+                <label for="price">Price</label><br>
+                <input type="number" name = "listing[price]" value="<%= listing.price %>"class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            <div>
+                <label for="location">Location</label><br>
+                <input type="text" name="listing[location]" value="<%= listing.location %>" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            <div>
+                <label for="country">Country</label><br>
+                <input type="text" name="listing[country]" value="<%= listing.country %>"class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+             <!-- in body i also sent the id with type hidden its alternative is , id passed in paramterin route -->
         <input type="hidden" name="listing[id]" value="<%= listing._id %>">
-        <button>EDIT</button>
+
+            <button class="mt-6 bg-blue-400 hover:bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+                EDIT
+            </button>
+        </div>
     </form>

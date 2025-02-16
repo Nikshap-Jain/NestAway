@@ -1,11 +1,35 @@
 <% layout("layouts/boilerplate") -%>
-    <h3>Add new Listing </h3>
     <form action="/listings" method="post">
-        <input type="text" name="listing[title]" placeholder="Enter title"><br><br>
-        <input type="text" name = "listing[description]" placeholder="Enter description"><br><br>
-        <input type="text" name="listing[image]" placeholder="Enter image link or url"><br><br>
-        <input type="number" name = "listing[price]" placeholder="Enter price"><br><br>
-        <input type="text" name="listing[location]" placeholder="Enter location"><br><br>
-        <input type="text" name="listing[country]" placeholder="Enter country"><br><br>
-        <button>ADD</button>
+        <div class="flex flex-col items-center">
+            <h3 class="text-4xl font-semibold text-gray-800 my-2">Add a New Listing </h3>
+            <div>
+                <label for="title ">Title</label><br>
+                <input type="text" name="listing[title]" placeholder="Cozy 2BHK Apartment in Delhi" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            <div>
+                <label for="description">Description</label><br>
+                <textarea type="text" name = "listing[description]" placeholder="Describe the property, amenities, nearby places, etc." class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" row=3></textarea>
+            </div>
+            <div>
+                <label for="image">Image Link</label><br>
+                <input type="text" name="listing[image]" placeholder='Paste image URL (e.g., https://example.com/image.jpg)' class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+
+            </div>
+            <div>
+                <label for="price">Price</label><br>
+                <input type="number" name = "listing[price]" placeholder="Enter price in ₹ (e.g., 1500)"class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            <div>
+                <label for="location">Location</label><br>
+                <input type="text" name="listing[location]" placeholder='Enter city or locality (e.g., Connaught Place, Delhi)' class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            <div>
+                <label for="country">Country</label><br>
+                <input type="text" name="listing[country]" placeholder='Enter country (e.g., India)'class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
+            </div>
+            
+            <button class="mt-6 bg-blue-400 hover:bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
+                ADD
+            </button>
+        </div>
     </form>
