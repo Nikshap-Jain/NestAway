@@ -640,6 +640,9 @@
   .border-neutral-300 {
     border-color: var(--color-neutral-300);
   }
+  .border-red-500 {
+    border-color: var(--color-red-500);
+  }
   .bg-blue-400 {
     background-color: var(--color-blue-400);
   }
@@ -737,6 +740,9 @@
   }
   .text-gray-800 {
     color: var(--color-gray-800);
+  }
+  .text-red-500 {
+    color: var(--color-red-500);
   }
   .text-transparent {
     color: transparent;
