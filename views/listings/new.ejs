@@ -5,12 +5,12 @@
             <div>
                 <label for="title ">Title</label><br>
                 <input type="text" name="listing[title]" placeholder="Cozy 2BHK Apartment in Delhi" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required>
-                <p class="hidden text-red-500 text-sm">Title is required</p>
+                <p class="hidden text-red-500 text-sm">Title cannot be empty.</p>
             </div>
             <div>
                 <label for="description">Description</label><br>
                 <textarea type="text" name = "listing[description]" placeholder="Describe the property, amenities, nearby places, etc." class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" row=3 required></textarea>
-                <p class="hidden text-red-500 text-sm">Description is neccessary</p>
+                <p class="hidden text-red-500 text-sm">Description is required to provide details about the property.</p>
             </div>
             <div>
                 <label for="image">Image Link</label><br>
@@ -20,18 +20,18 @@
             <div>
                 <label for="price">Price</label><br>
                 <input type="number" name = "listing[price]" placeholder="Enter price in ₹ (e.g., 1500)"class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required min="1">
-                <p class="hidden text-red-500 text-sm">Price is required</p>
+                <p class="hidden text-red-500 text-sm">Price must be a valid amount and cannot be empty.</p>
             </div>
             <div>
                 <label for="location">Location</label><br>
                 <input type="text" name="listing[location]" placeholder='Enter city or locality (e.g., Connaught Place, Delhi)' class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required>
-                <p class="hidden text-red-500 text-sm">Location is required</p>
+                <p class="hidden text-red-500 text-sm">Location is required to list the property.</p>
                 
             </div>
             <div>
                 <label for="country">Country</label><br>
                 <input type="text" name="listing[country]" placeholder='Enter country (e.g., India)'class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required>
-                <p class="hidden text-red-500 text-sm">Country is required</p>
+                <p class="hidden text-red-500 text-sm">Country is required for accurate property listing.</p>
 
             </div>
             

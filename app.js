@@ -5,6 +5,7 @@ const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate"); //use to make template like navbar which show on other ejs template (layouts in views folder)
+const wrapAsync = require("./utils/wrapAsync.js");
 
 const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
 app.set("view engine", "ejs");
@@ -39,11 +40,14 @@ app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
 });
 
-app.post("/listings", async (req, res) => {
-  const newListing = await new Listing(req.body.listing);
-  newListing.save();
-  res.redirect("/listings");
-});
+app.post(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    const newListing = await new Listing(req.body.listing);
+    newListing.save();
+    res.redirect("/listings");
+  })
+);
 
 //Edit route
 
@@ -72,6 +76,10 @@ app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
   let info = await Listing.findById(id);
   res.render("listings/show.ejs", { info });
+});
+
+app.use((err, req, res, next) => {
+  res.send("These is some error in backend");
 });
 
 app.listen(3000, () => {
