@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
+    "dev": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.2",
+    "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.10.0",
     "tailwindcss": "^4.0.6"
