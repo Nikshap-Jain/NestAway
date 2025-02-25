@@ -8,7 +8,8 @@ const engine = require("ejs-mate"); //use to make template like navbar which sho
 const wrapAsync = require("./utils/wrapAsync.js");
 const expressError = require("./utils/expressError.js");
 const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
-const listingSchema = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
+const Review = require("./models/reviews.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -34,11 +35,20 @@ const validateListing = (req, res, next) => {
   const { error } = listingSchema.validate(req.body);
   if (error) {
     let errMsg = error.details.map((info) => info.message).join(",");
-    console.log(errMsg);
     throw new expressError(400, errMsg);
   }
+  next();
 };
 
+const validateReview = (req, res, next) => {
+  console.log(req.body);
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((info) => info.message).join(",");
+    throw new expressError(400, errMsg);
+  }
+  next();
+};
 // index route
 app.get(
   "/listings",
@@ -106,6 +116,21 @@ app.get(
     let { id } = req.params;
     let info = await Listing.findById(id);
     res.render("listings/show.ejs", { info });
+  })
+);
+
+//Review
+app.post(
+  "/listings/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    console.log(req.body);
+    const listing = await Listing.findById(req.params.id);
+    const newReview = new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    res.redirect(`/listings/${listing._id}`);
   })
 );
 
