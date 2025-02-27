@@ -10,6 +10,7 @@ const expressError = require("./utils/expressError.js");
 const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
 const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/reviews.js");
+const listings = require("./routes/listings.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -31,14 +32,7 @@ app.get("/", (req, res) => {
   res.send("Root");
 });
 
-const validateListing = (req, res, next) => {
-  const { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((info) => info.message).join(",");
-    throw new expressError(400, errMsg);
-  }
-  next();
-};
+app.use("/listings", listings);
 
 const validateReview = (req, res, next) => {
   console.log(req.body);
@@ -49,82 +43,13 @@ const validateReview = (req, res, next) => {
   }
   next();
 };
-// index route
-app.get(
-  "/listings",
-  wrapAsync(async (req, res) => {
-    const AllListing = await Listing.find();
-    res.render("listings/index.ejs", { AllListing });
-  })
-);
 
-// add new listing
-
-//this get should be before show route otherwise new will be considered as id and cause an error
-app.get("/listings/new", (req, res) => {
-  res.render("listings/new.ejs");
-});
-
-app.post(
-  "/listings",
-  validateListing,
-  wrapAsync(async (req, res) => {
-    console.log("Received request body:", req.body); // Add this line
-    const newListing = await new Listing(req.body.listing);
-    await newListing.save();
-    console.log("Saved listing:", newListing); // Add this line
-    res.redirect("/listings");
-  })
-);
-
-//Edit route
-
-app.get(
-  "/listings/:id/edit",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
-  })
-);
-
-app.put(
-  "/listings",
-  validateListing,
-  wrapAsync(async (req, res) => {
-    await Listing.findByIdAndUpdate(req.body.listing.id, req.body.listing);
-    res.redirect("/listings");
-  })
-);
-
-//Delete route
-
-app.delete(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const deleted = await Listing.findByIdAndDelete(id);
-    console.log(deleted);
-    res.redirect("/listings");
-  })
-);
-
-// show route
-app.get(
-  "/listings/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let info = await Listing.findById(id);
-    res.render("listings/show.ejs", { info });
-  })
-);
-
-//Review
+// post Review
 app.post(
   "/listings/:id/reviews",
   validateReview,
   wrapAsync(async (req, res) => {
-    console.log(req.body);
+    console.log("in post of review");
     const listing = await Listing.findById(req.params.id);
     const newReview = new Review(req.body.review);
     listing.reviews.push(newReview);
@@ -134,6 +59,17 @@ app.post(
   })
 );
 
+// Delete Review
+
+app.delete(
+  "/listings/:id/reviews/:reviewId",
+  wrapAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Review.findByIdAndDelete(reviewId);
+    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    res.redirect(`/listings/${id}`);
+  })
+);
 //If there is a incorrect route it handled here
 
 app.all("*", (req, res, next) => {
@@ -142,7 +78,7 @@ app.all("*", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something Went wrong" } = err;
-  // res.status(statusCode).send(message);
+  res.status(statusCode);
   res.render("listings/error.ejs", { err });
 });
 
