@@ -3,7 +3,7 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
 const methodOverride = require("method-override");
-const { listingSchema, reviewSchema } = require("../schema.js");
+const { listingSchema } = require("../schema.js");
 const expressError = require("../utils/expressError.js");
 
 const validateListing = (req, res, next) => {
@@ -56,10 +56,11 @@ router.get(
 );
 
 router.put(
-  "/",
+  "/:id",
   validateListing,
   wrapAsync(async (req, res) => {
-    await Listing.findByIdAndUpdate(req.body.listing.id, req.body.listing);
+    const { id } = req.params;
+    await Listing.findByIdAndUpdate(id, req.body.listing);
     res.redirect("/listings");
   })
 );
