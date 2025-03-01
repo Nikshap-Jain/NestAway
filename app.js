@@ -8,6 +8,8 @@ const expressError = require("./utils/expressError.js");
 const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
 const listings = require("./routes/listings.js");
 const reviews = require("./routes/reviews.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -27,6 +29,26 @@ main()
 
 app.get("/", (req, res) => {
   res.send("Root");
+});
+
+const sessionOptions = {
+  secret: "nikshapjain",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secret: "nikshap",
+    expires: Date.now() + 14 * 24 * 60 * 1000,
+    maxAge: 14 * 24 * 60 * 1000,
+    httpOnly: true,
+  },
+};
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.newListing = req.flash("success");
+  next();
 });
 
 app.use("/listings", listings);
