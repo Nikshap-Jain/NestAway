@@ -5,6 +5,7 @@ const Listing = require("../models/listing.js");
 const methodOverride = require("method-override");
 const { listingSchema } = require("../schema.js");
 const expressError = require("../utils/expressError.js");
+const { isLoggedIn } = require("../middleware.js");
 
 const validateListing = (req, res, next) => {
   console.log(req.body);
@@ -28,12 +29,13 @@ router.get(
 // add new listing
 
 //this get should be before show route otherwise new will be considered as id and cause an error
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("listings/new.ejs");
 });
 
 router.post(
   "/",
+  isLoggedIn,
   validateListing,
   wrapAsync(async (req, res) => {
     console.log("Received request body:", req.body); // Add this line
@@ -49,6 +51,7 @@ router.post(
 
 router.get(
   "/:id/edit",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -62,6 +65,7 @@ router.get(
 
 router.put(
   "/:id",
+  isLoggedIn,
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
@@ -75,6 +79,7 @@ router.put(
 
 router.delete(
   "/:id",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deleted = await Listing.findByIdAndDelete(id);
