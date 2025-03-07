@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
+const { saveRedirectUrl } = require("../middleware");
 
 //rendering form
 router.get("/signup", (req, res) => {
@@ -21,8 +22,15 @@ router.post(
 
       let user = await User.register(newUser, password);
       console.log(user);
-      req.flash("success", "Welcome to Nestaway");
-      res.redirect("/listings");
+
+      req.login(user, (err) => {
+        if (err) {
+          return next(err);
+        } else {
+          req.flash("success", "Welcome to Nestaway");
+          res.redirect("/listings");
+        }
+      });
     } catch (e) {
       req.flash("error", e.message);
       res.redirect("/signup");
@@ -36,13 +44,15 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  saveRedirectUrl,
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
   async (req, res) => {
     req.flash("success", "Welcome to Nestaway ");
-    res.redirect("/listings");
+    let redirectURL = res.locals.redirectUrl || "/listings";
+    res.redirect(redirectURL);
   }
 );
 

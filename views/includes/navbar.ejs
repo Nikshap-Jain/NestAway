@@ -1,5 +1,5 @@
 <nav class="p-5 border border-neutral-300 font-medium shadow-md fixed top-0 left-0 z-50 w-full bg-white">
-    <div class="flex gap-8 items-center">
+    <div class="flex gap-8 items-center justify-between">
         <div class="bg-gradient-to-r from-[#007AFF] to-[#00ADEF] bg-clip-text text-transparent">
 
             <a href="/" class="font-bold text-2xl"><i class="fa-regular fa-compass pr-2  text-3xl"></i><span class="">NestAway</span></a>
@@ -9,6 +9,17 @@
             <a href="" class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">Home</a>
             <a href="/listings"class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">All Listing</a>
             <a href="/listings/new"class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">Add New Listing</a>
+        </div>
+
+        <div class="flex gap-5 ">
+            <% if(!currentUser){ %>
+                <a href="/signup" class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">Sign up</a>
+            <a href="/login"class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">Log in</a>
+            <% } %>
+
+            <% if(currentUser){ %>
+            <a href="/logout"class="px-4 py-2 rounded-full transition-all duration-300 hover:bg-neutral-200 hover:shadow-md hover:scale-105">Log out</a>
+            <% } %>
         </div>
     </div>
 </nav>
