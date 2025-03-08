@@ -8,15 +8,15 @@ const listingSchema = new mongoose.Schema({
   },
   description: String,
   image: {
-    filename: { type: String, default: "listingImg" },
-    url: {
-      type: String,
-      default:
-        "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA",
-      set: (v) =>
-        v === ""
-          ? "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA"
-          : v,
+    type: String,
+    default:
+      "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA",
+    set: function (v) {
+      // Handle undefined, null, or empty string cases
+      if (v === undefined || v === null || v === "") {
+        return "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA";
+      }
+      return v;
     },
   },
   price: { type: Number, required: true },
@@ -28,6 +28,10 @@ const listingSchema = new mongoose.Schema({
       ref: "Review",
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 //DeleteMiddleware for simultaneous deletion of reviews with listing

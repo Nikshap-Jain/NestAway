@@ -39,7 +39,8 @@ router.post(
   validateListing,
   wrapAsync(async (req, res) => {
     console.log("Received request body:", req.body); // Add this line
-    const newListing = await new Listing(req.body.listing);
+    const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
     console.log("Saved listing:", newListing); // Add this line
     req.flash("success", "New Listing is added successfully");
@@ -94,7 +95,8 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let info = await Listing.findById(id).populate("reviews");
+    let info = await Listing.findById(id).populate("reviews").populate("owner");
+    console.log(info);
     if (!info) {
       req.flash("error", "Listing you requested for does not exists");
       res.redirect("/listings");
