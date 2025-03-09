@@ -2,20 +2,9 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Listing = require("../models/listing.js");
-const methodOverride = require("method-override");
 const { listingSchema } = require("../schema.js");
 const expressError = require("../utils/expressError.js");
-const { isLoggedIn } = require("../middleware.js");
-
-const validateListing = (req, res, next) => {
-  console.log(req.body);
-  const { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((info) => info.message).join(",");
-    throw new expressError(400, errMsg);
-  }
-  next();
-};
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
 // index route
 router.get(
@@ -53,6 +42,7 @@ router.post(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -67,12 +57,13 @@ router.get(
 router.put(
   "/:id",
   isLoggedIn,
+  isOwner,
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndUpdate(id, req.body.listing);
     req.flash("success", "Listing is updated successfully");
-    res.redirect("/listings");
+    res.redirect(`/listings/${id}`);
   })
 );
 
@@ -81,6 +72,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deleted = await Listing.findByIdAndDelete(id);
@@ -95,7 +87,14 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let info = await Listing.findById(id).populate("reviews").populate("owner");
+    let info = await Listing.findById(id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("owner");
     console.log(info);
     if (!info) {
       req.flash("error", "Listing you requested for does not exists");
