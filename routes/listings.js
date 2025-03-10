@@ -6,6 +6,14 @@ const { listingSchema } = require("../schema.js");
 const expressError = require("../utils/expressError.js");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controller/listings.js");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
+// add new listing
+
+//this get should be before show route otherwise new will be considered as id and cause an error
+
+router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 // index route
 router
@@ -16,12 +24,6 @@ router
     validateListing,
     wrapAsync(listingController.createNewListing)
   );
-
-// add new listing
-
-//this get should be before show route otherwise new will be considered as id and cause an error
-
-router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 //Edit route
 
