@@ -3,7 +3,7 @@
 
         <h3 class="text-4xl font-semibold text-gray-800 mb-4"><%=info.title %></h3>
         <div class="shadow-lg rounded-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
-            <img src="<%=info.image%>" alt="Error" class="w-full max-w-lg aspect-[16/9] object-cover">
+            <img src="<%=info.image.url%>" alt="Error" class="w-full max-w-lg aspect-[16/9] object-cover">
         </div>
         <ul class="mt-4">
             <li><i>Owned by <%= info.owner.username%></i></li>

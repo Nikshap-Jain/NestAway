@@ -7,17 +7,21 @@ const listingSchema = new mongoose.Schema({
     required: true,
   },
   description: String,
+  // image: {
+  //   type: String,
+  //   default:
+  //     "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA",
+  //   set: function (v) {
+  //     // Handle undefined, null, or empty string cases
+  //     if (v === undefined || v === null || v === "") {
+  //       return "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA";
+  //     }
+  //     return v;
+  //   },
+  // },
   image: {
-    type: String,
-    default:
-      "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA",
-    set: function (v) {
-      // Handle undefined, null, or empty string cases
-      if (v === undefined || v === null || v === "") {
-        return "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA";
-      }
-      return v;
-    },
+    url: String,
+    filename: String,
   },
   price: { type: Number, required: true },
   location: String,

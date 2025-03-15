@@ -1,5 +1,5 @@
 <% layout("layouts/boilerplate") -%>
-    <form action="/listings/<%=listing._id%>?_method=PUT" method="post" id="listingForm" novalidate>
+    <form action="/listings/<%=listing._id%>?_method=PUT" method="post" id="listingForm" novalidate enctype="multipart/form-data">
         <div class="flex flex-col items-center">
             <h3 class="text-4xl font-semibold text-gray-800 mt-6">Edit This Listing</h3>
             <div>
@@ -12,9 +12,15 @@
                 <textarea type="text" name = "listing[description]" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required><%=listing.description %></textarea>
                 <p class="hidden text-red-500 text-sm">Description is required to provide details about the property.</p>
             </div>
+
             <div>
-                <label for="image">Image Link</label><br>
-                <input type="text" name="listing[image]" value="<%= listing.image %>" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg" required>
+                <label for="image">Current Image</label><br>
+                <img src="<%= originalImageUrl%>" alt="Error">
+            </div>
+
+            <div>
+                <label for="image">Upload New Image</label><br>
+                <input type="file" name="listing[image]" class="max-w-2xl lg:w-2xl border border-neutral-300 rounded-lg shadow-sm p-1 pl-3 hover:shadow-lg">
                 <p class="hidden text-red-500 text-sm">link must be valid and cannot be empty.</p>
             </div>
             <div>
