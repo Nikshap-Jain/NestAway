@@ -1,18 +1,109 @@
 <% layout("layouts/boilerplate") -%>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-10">
-    <% for (listing of AllListing){ %>
-        <div class="block shadow-lg rounded-xl transition-transform hover:scale-105 duration-300">
-            <a href="/listings/<%=listing._id%>">
+
+<div id="filters" class="mx-12 flex flex-wrap mb-4 space-x-8">
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-champagne-glasses"></i></div>
+        <p>Beach</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-city"></i></div>
+        <p>Iconic Cities</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-mountain-sun"></i></div>
+        <p>Mountains</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing Pools</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-tent"></i></div>
+        <p>Camping</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+    </div>
+    <div class="text-center opacity-60 hover:opacity-100">
+        <div><i class="fa-solid fa-snowman"></i></div>
+        <p>Hill Stations</p>
+    </div>
     
+    <!-- Toggle Button for Tax Inclusion -->
+    <div class="flex items-center gap-3 border border-slate-300 rounded-2xl p-2 ml-16">
+        <label for="tax-toggle" class="font-medium text-gray-700">Display total after tax</label>
+        <input type="checkbox" id="tax-toggle" class="hidden">
+        <div id="toggle-switch" class="relative w-12 h-6 bg-gray-300 rounded-full transition-all cursor-pointer">
+            <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-all"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Listing Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-10">
+    <% for (listing of AllListing) { %>
+        <div class="block shadow-lg rounded-xl transition-transform hover:scale-105 duration-300">
+            <a href="/listings/<%= listing._id %>">
                 <div class="rounded-xl overflow-hidden">
-                    <img src="<%=listing.image.url%>" alt="NoImage" class="aspect-square object-cover hover:opacity-90 transition-opacity">
+                    <img src="<%= listing.image.url %>" alt="NoImage" class="aspect-square object-cover hover:opacity-90 transition-opacity">
                 </div>
                 <div class="p-2">
-                    <p class="font-semibold text-gray-800 truncate"> <%=listing.title %></p>
-                    <p class="text-gray-500 text-sm">&#8377;<%=  listing.price ? listing.price.toLocaleString("en-IN") : '0'%> / night</p>
+                    <p class="font-semibold text-gray-800 truncate"><%= listing.title %></p>
+                    <p class="text-gray-500 text-sm price" data-base-price="<%= listing.price %>">
+                        &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : '0' %> / night
+                    </p>
                 </div>
-              </a>
+            </a>
         </div>
-    <%}%>
-        
+    <% } %>
 </div>
+
+<script>
+    // Select elements
+const toggleSwitch = document.getElementById("toggle-switch");
+const checkBox = document.getElementById("tax-toggle");
+const priceElements = document.querySelectorAll(".price");
+const toggleDot = toggleSwitch.querySelector("div"); // Select the inner dot element
+
+// Define tax rate
+const taxRate = 0.18; // 18% tax
+
+// Function to update price display
+function updatePrices() {
+    priceElements.forEach(priceElement => {
+        const basePrice = parseFloat(priceElement.getAttribute("data-base-price")) || 0;
+        if (checkBox.checked) {
+            // Calculate total price with tax
+            const totalWithTax = basePrice + (basePrice * taxRate);
+            priceElement.innerHTML = `&#8377;${totalWithTax.toLocaleString("en-IN")} / night`;
+            toggleSwitch.classList.add("bg-blue-600");
+            toggleSwitch.classList.remove("bg-gray-300");
+            toggleDot.style.transform = "translateX(1.5rem)"; // Move the dot to the right
+        } else {
+            // Show base price
+            priceElement.innerHTML = `&#8377;${basePrice.toLocaleString("en-IN")} / night`;
+            toggleSwitch.classList.add("bg-gray-300");
+            toggleSwitch.classList.remove("bg-blue-600");
+            toggleDot.style.transform = "translateX(0)"; // Move the dot to the left
+        }
+    });
+}
+
+// Click event to toggle the checkbox
+toggleSwitch.addEventListener("click", () => {
+    checkBox.checked = !checkBox.checked;
+    updatePrices();
+});
+
+// Update price on checkbox change (if changed via keyboard or other triggers)
+checkBox.addEventListener("change", updatePrices);
+</script>
