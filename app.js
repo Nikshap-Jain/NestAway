@@ -18,6 +18,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const usersRoute = require("./routes/users.js");
+const Listing = require("./models/listing.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -37,10 +38,6 @@ async function main() {
 main()
   .then((res) => console.log("Database is connected"))
   .catch((err) => console.log("Error in Database connection"));
-
-app.get("/", (req, res) => {
-  res.send("Root");
-});
 
 const store = MongoStore.create({
   mongoUrl: dbUrl,
@@ -96,6 +93,11 @@ app.get("/demouser", async (req, res) => {
   let newUser = await User.register(demoUser, "nikshap");
   res.send(newUser);
   console.log(newUser);
+});
+
+app.get("/", async (req, res) => {
+  const AllListing = await Listing.find();
+  res.render("listings/index.ejs", { AllListing });
 });
 
 app.use("/listings", listingsRoute);
