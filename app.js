@@ -9,10 +9,10 @@ const path = require("path");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate"); //use to make template like navbar which show on other ejs template (layouts in views folder)
 const expressError = require("./utils/expressError.js");
-const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
 const listingsRoute = require("./routes/listings.js");
 const reviewsRoute = require("./routes/reviews.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -27,8 +27,11 @@ app.use(methodOverride("_method"));
 app.engine("ejs", engine);
 app.use(express.static(path.join(__dirname, "/public")));
 
+// const mongoURL = "mongodb://127.0.0.1:27017/nestaway";
+const dbUrl = process.env.ATLASDB_URL;
+
 async function main() {
-  await mongoose.connect(mongoURL);
+  await mongoose.connect(dbUrl);
 }
 
 main()
@@ -39,8 +42,21 @@ app.get("/", (req, res) => {
   res.send("Root");
 });
 
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) => {
+  console.log("Error in mongo Store :", err);
+});
+
 const sessionOptions = {
-  secret: "nikshapjain",
+  store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {

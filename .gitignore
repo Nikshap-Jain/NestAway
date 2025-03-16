@@ -8,7 +8,7 @@ node_modules/
 *.log
 
 # Operating System files
-.DS_Store
+**/.DS_Store
 
 # IDE/editor files
 .vscode/
